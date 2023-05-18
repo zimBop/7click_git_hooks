@@ -1,0 +1,24 @@
+{
+    "name": "zimbop/git-hooks",
+    "description": "7click git hooks",
+    "autoload": {
+        "psr-4": {
+            "Zimbop\\GitHooks\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "zimBop"
+        }
+    ],
+    "require": {
+        "php": "^7.1||^8.0"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Zimbop\\GitHooks\\Providers\\GitHooksProvider"
+            ]
+        }
+    }
+}

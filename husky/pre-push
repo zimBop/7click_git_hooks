@@ -1,0 +1,43 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+. "$(dirname -- "$0")/env/env.sh"
+
+
+if [ -z ${RUNS_IN_DOCKER+x} ]; then
+  echo "Env variables are not set. Follow the instructions in '.husky/README.md'"
+  exit 1
+fi
+
+z40=0000000000000000000000000000000000000000
+
+while read local_ref local_sha remote_ref remote_sha; do
+
+  short_local_branch="$(echo $local_ref | sed 's/refs\/heads\///g')"
+
+  if [ "$local_sha" = $z40 ]; then
+    echo "delete"
+    :
+  else
+    if [ "$remote_sha" = $z40 ]; then
+      # New branch, examine all commits
+      commits=$(git log --pretty=oneline --abbrev-commit --decorate=no --first-parent --no-merges ^master ${short_local_branch})
+    else
+      # Update to existing branch, examine new commits
+      range="$remote_sha..$local_sha"
+      commits=$(git log --pretty=oneline --abbrev-commit --decorate=no --first-parent ${range})
+    fi
+
+    committer=$(git log -1 ${commit} --pretty="%cn")
+
+    if [ "$RUNS_IN_DOCKER" = true ]; then
+      docker exec -w ${APP_CODE_PATH_CONTAINER} ${PHP_CONTAINER_NAME} php artisan git:send_push_notify "${committer}" "${short_local_branch}" "${commits}"
+    else
+      send_notify() {
+          ${PHP_BINARY_PATH} ${APP_CODE_PATH}artisan git:send_push_notify "${committer}" "${short_local_branch}" "${commits}"
+      }
+      send_notify
+    fi
+  fi
+done
+
+exit 1
