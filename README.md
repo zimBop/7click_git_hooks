@@ -17,3 +17,5 @@ Create and fill .husky/env/.env.sh by copying stable example file:
   ``` cp .husky/env/env.sh.example.docker .husky/env/env.sh ```
 * In case PHP runs on host machine <br />
   ``` cp .husky/env/env.sh.example.host .husky/env/env.sh ```
+
+#### Set config values in config/git_hooks.php
