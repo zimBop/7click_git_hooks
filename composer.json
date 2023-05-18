@@ -1,5 +1,4 @@
 {
-    "version": "1.0.0",
     "name": "zimbop/git-hooks",
     "description": "7click git hooks",
     "autoload": {
