@@ -3,7 +3,7 @@
 namespace Zimbop\GitHooks\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Zimbop\GitHooks\SendPrePushNotify;
+use Zimbop\GitHooks\Commands\SendPrePushNotify;
 
 class GitHooksProvider extends ServiceProvider
 {

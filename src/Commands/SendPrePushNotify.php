@@ -1,6 +1,6 @@
 <?php
 
-namespace Zimbop\GitHooks;
+namespace Zimbop\GitHooks\Commands;
 
 use Illuminate\Console\Command;
 
