@@ -6,7 +6,7 @@ use Illuminate\Console\Command;
 
 class SendPrePushNotify extends Command
 {
-    private const COMMITS_TO_SHOW = 5;
+    const COMMITS_TO_SHOW = 5;
 
     protected $signature = 'git:send_push_notify {committer} {branch} {commits}';
 
