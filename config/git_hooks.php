@@ -1,6 +1,8 @@
 <?php
 
 return [
+    'project_name' => 'optimizer6',
+
     'notifier' => 'path to TelegramNotifier class',//TelegramNotifier::class,
 
     // Bitbucket api urls
