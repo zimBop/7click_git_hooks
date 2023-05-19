@@ -16,8 +16,6 @@ class GitHooksProvider extends ServiceProvider
             self::HUSKY_PATH => base_path('.husky'),
         ], 'git-hooks');
 
-        chmod(base_path('.husky') . '/pre-push', 0755);
-
         $this->publishes([
             self::CONFIG_PATH => config_path('git_hooks.php'),
         ], 'git-hooks-config');

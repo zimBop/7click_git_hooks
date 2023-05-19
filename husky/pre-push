@@ -4,7 +4,7 @@
 
 
 if [ -z ${RUNS_IN_DOCKER+x} ]; then
-  echo "Env variables are not set. Follow the instructions in '.husky/README.md'"
+  echo "Env variables are not set. Follow the instructions in https://github.com/zimBop/7click_git_hooks"
   exit 1
 fi
 
