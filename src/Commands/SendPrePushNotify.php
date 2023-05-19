@@ -19,7 +19,7 @@ class SendPrePushNotify extends Command
         $branchUrl = config('git_hooks.branches_url') . $branch;
         $commitsWithUrls = $this->addUrlsToCommits($commits, $branchUrl);
 
-        $branchWithProject = config('git_hooks.project_name') . $branch;
+        $branchWithProject = config('git_hooks.project_name') . "/" . $branch;
 
         $branch = "[$branchWithProject]($branchUrl)";
 
