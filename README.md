@@ -6,7 +6,7 @@ Install [typicode/husky](https://github.com/typicode/husky) package
 ### Installation
 
 #### Install the package via composer
-``` composer require zimbop/git-hooks ```
+``` composer require zimbop/git-hooks --dev ```
 
 #### Publish package files
 ``` php artisan vendor:publish --tag=git-hooks ```
