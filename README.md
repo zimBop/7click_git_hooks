@@ -1,4 +1,4 @@
-### Pre requirements
+### Requirements
 Install [typicode/husky](https://github.com/typicode/husky) package
 
 <hr>
@@ -21,3 +21,7 @@ Create and fill .husky/env/.env.sh by copying stable example file:
 #### If there is no config/git_hooks.php in repo
 Publish config ``` php artisan vendor:publish --tag=git-hooks-config```
 and set values
+
+#### In case hook is not running
+``` chmod ug+x .husky/pre-push ``` # make file executable <br>
+``` git config core.filemode false ``` # to ignore file mode changes <br>
