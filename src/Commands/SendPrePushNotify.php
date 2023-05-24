@@ -8,13 +8,14 @@ class SendPrePushNotify extends Command
 {
     const COMMITS_TO_SHOW = 5;
 
-    protected $signature = 'git:send_push_notify {committer} {branch} {commits}';
+    protected $signature = 'git:send_push_notify {committer} {branch} {commits} {forced=0}';
 
     public function handle()
     {
         $branch = $this->argument('branch');
         $committer = $this->argument('committer');
         $commits = $this->argument('commits');
+        $forced = $this->argument('forced');
 
         $branchUrl = config('git_hooks.branches_url') . $branch;
         $commitsWithUrls = $this->addUrlsToCommits($commits, $branchUrl);
@@ -23,7 +24,9 @@ class SendPrePushNotify extends Command
 
         $branch = "[$branchWithProject]($branchUrl)";
 
-        $message = "$committer pushed to " . $branch . PHP_EOL . PHP_EOL . $commitsWithUrls;
+        $forcedText = $forced == "1" ? '❗ forcibly' : '';
+
+        $message = "$committer $forcedText pushed to " . $branch . PHP_EOL . PHP_EOL . $commitsWithUrls;
 
         if (empty($message)) {
             return 0;
@@ -45,6 +48,10 @@ class SendPrePushNotify extends Command
 
     private function addUrlsToCommits(string $commits, string $branchUrl): string
     {
+        if (empty($commits)) {
+            return '';
+        }
+
         $commitsArray = preg_split('~\R~', $commits);
 
         $commitsArray = array_map(function ($commit) {

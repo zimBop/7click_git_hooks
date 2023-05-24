@@ -10,7 +10,23 @@ fi
 
 z40=0000000000000000000000000000000000000000
 
+# Inspired by https://github.com/kyanny/git-hooks-detect-force-update/blob/master/pre-receive
+check_is_forced() {
+  oldrev=$(git rev-parse --short $1)
+  newrev=$(git rev-parse --short $2)
+
+  commits_diff=$(git rev-list --abbrev-commit ${oldrev} ^${newrev})
+
+  if [ -z "$commits_diff" ]; then
+      is_forced="0"
+  else
+      is_forced="1"
+  fi
+}
+
 while read local_ref local_sha remote_ref remote_sha; do
+
+  check_is_forced $remote_sha $local_sha
 
   short_local_branch="$(echo $local_ref | sed 's/refs\/heads\///g')"
 
@@ -30,10 +46,10 @@ while read local_ref local_sha remote_ref remote_sha; do
     committer=$(git log -1 ${commit} --pretty="%cn")
 
     if [ "$RUNS_IN_DOCKER" = true ]; then
-      docker exec -w ${APP_CODE_PATH_CONTAINER} ${PHP_CONTAINER_NAME} php artisan git:send_push_notify "${committer}" "${short_local_branch}" "${commits}"
+      docker exec -w ${APP_CODE_PATH_CONTAINER} ${PHP_CONTAINER_NAME} php artisan git:send_push_notify "${committer}" "${short_local_branch}" "${commits}" "${is_forced}"
     else
       send_notify() {
-          ${PHP_BINARY_PATH} ${APP_CODE_PATH}artisan git:send_push_notify "${committer}" "${short_local_branch}" "${commits}"
+          ${PHP_BINARY_PATH} ${APP_CODE_PATH}artisan git:send_push_notify "${committer}" "${short_local_branch}" "${commits}" "${is_forced}"
       }
       send_notify
     fi
