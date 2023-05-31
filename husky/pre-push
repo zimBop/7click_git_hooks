@@ -26,8 +26,6 @@ check_is_forced() {
 
 while read local_ref local_sha remote_ref remote_sha; do
 
-  check_is_forced $remote_sha $local_sha
-
   short_local_branch="$(echo $local_ref | sed 's/refs\/heads\///g')"
 
   if [ "$local_sha" = $z40 ]; then
@@ -35,9 +33,11 @@ while read local_ref local_sha remote_ref remote_sha; do
     :
   else
     if [ "$remote_sha" = $z40 ]; then
+      is_forced="0"
       # New branch, examine all commits
       commits=$(git log --pretty=oneline --abbrev-commit --decorate=no --first-parent --no-merges ^master ${short_local_branch})
     else
+      check_is_forced $remote_sha $local_sha
       # Update to existing branch, examine new commits
       range="$remote_sha..$local_sha"
       commits=$(git log --pretty=oneline --abbrev-commit --decorate=no --first-parent ${range})
