@@ -62,7 +62,16 @@ class SendPrePushNotify extends Command
             $commitParts = explode(' ', $commit);
             array_shift($commitParts);
 
-            return "[$commitHash]($commitUrl) " . implode(' ', $commitParts);
+            $commitMessage = implode(' ', $commitParts);
+
+            // escape reserved Telegram characters
+            $commitMessage = str_replace(
+                ['_', '[', ']', '*', '`'],
+                ['\\_', '\\[', '\\]', '\\*', '\\`'],
+                $commitMessage
+            );
+
+            return "[$commitHash]($commitUrl) $commitMessage";
         }, $commitsArray);
 
         if (count($commitsArray) > self::COMMITS_TO_SHOW) {
