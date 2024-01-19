@@ -3,6 +3,7 @@
 namespace Zimbop\GitHooks\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Log;
 
 class SendPrePushNotify extends Command
 {
@@ -40,7 +41,7 @@ class SendPrePushNotify extends Command
                 $notifierClassName::CHAT_DEV
             );
         } catch (\Exception $exception) {
-            $this->info('Notifier class is not set in config');
+            Log::error('[Pre Push Git Hook] ' . $exception->getMessage());
         }
 
         return 0;
